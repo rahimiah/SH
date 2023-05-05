@@ -1,0 +1,168 @@
+// This is a generated Motoko binding.
+// Please use `import service "ic:canister_id"` instead to call canisters on the IC if possible.
+
+module {
+  public type AccountIdentifier = Text;
+  public type AccountIdentifier__3 = Text;
+  public type AllowanceRequest = {
+    token : TokenIdentifier__5;
+    owner : User__3;
+    spender : Principal;
+  };
+  public type ApproveRequest = {
+    token : TokenIdentifier__5;
+    subaccount : ?SubAccount;
+    allowance : Balance;
+    spender : Principal;
+  };
+  public type Balance = Nat;
+  public type BalanceRequest = { token : TokenIdentifier__5; user : User__3 };
+  public type BalanceResponse = { #ok : Balance; #err : CommonError__1 };
+  public type Balance__1 = Nat;
+  public type CommonError = {
+    #InvalidToken : TokenIdentifier__5;
+    #Other : Text;
+  };
+  public type CommonError__1 = {
+    #InvalidToken : TokenIdentifier__5;
+    #Other : Text;
+  };
+  public type Extension = Text;
+  public type HeaderField = (Text, Text);
+  public type HttpRequest = {
+    url : Text;
+    method : Text;
+    body : [Nat8];
+    headers : [HeaderField];
+  };
+  public type HttpResponse = {
+    body : [Nat8];
+    headers : [HeaderField];
+    status_code : Nat16;
+  };
+  public type Listing__1 = {
+    locked : ?Time__1;
+    seller : Principal;
+    price : Nat64;
+  };
+  public type Memo = [Nat8];
+  public type Metadata = {
+    #fungible : {
+      decimals : Nat8;
+      metadata : ?[Nat8];
+      name : Text;
+      symbol : Text;
+    };
+    #nonfungible : { metadata : ?[Nat8] };
+  };
+  public type MetadataStorageInfo = { url : Text; thumb : Text };
+  public type MetadataStorageType = { #S3; #Last; #Fleek; #MetaBox };
+  public type MintRequest = { to : User__3; metadata : ?[Nat8] };
+  public type Property = { trait_type : Text; value : Text };
+  public type Result_10 = { #ok : Balance__1; #err : CommonError };
+  public type Result_11 = { #ok : Metadata; #err : CommonError };
+  public type Result_12 = { #ok : Bool; #err : CommonError };
+  public type Result_8 = {
+    #ok : [(TokenIndex, ?Listing__1, ?[Nat8])];
+    #err : CommonError;
+  };
+  public type Result_9 = { #ok : [TokenIndex]; #err : CommonError };
+  public type Result__1 = { #ok : Metadata; #err : CommonError };
+  public type Result__1_1 = { #ok : AccountIdentifier__3; #err : CommonError };
+  public type Result__1_2 = { #ok : Balance__1; #err : CommonError };
+  public type SubAccount = [Nat8];
+  public type Time = Int;
+  public type Time__1 = Int;
+  public type TokenIdentifier__5 = Text;
+  public type TokenIdentifier__6 = Text;
+  public type TokenIndex = Nat32;
+  public type TransferRequest = {
+    to : User__3;
+    token : TokenIdentifier__5;
+    notify : Bool;
+    from : User__3;
+    memo : Memo;
+    subaccount : ?SubAccount;
+    amount : Balance;
+  };
+  public type TransferResponse = {
+    #ok : Balance;
+    #err : {
+      #CannotNotify : AccountIdentifier;
+      #InsufficientBalance;
+      #InvalidToken : TokenIdentifier__5;
+      #Rejected;
+      #Unauthorized : AccountIdentifier;
+      #Other : Text;
+    };
+  };
+  public type User__3 = {
+    #principal : Principal;
+    #address : AccountIdentifier;
+  };
+  public type Self = actor {
+    acceptCycles : shared () -> async ();
+    addMetadataStorageType : shared Text -> ();
+    addMetadataUrlMany : shared [
+        (MetadataStorageType, TokenIndex, MetadataStorageInfo)
+      ] -> ();
+    allowance : shared query AllowanceRequest -> async Result__1_2;
+    approve : shared ApproveRequest -> async Bool;
+    approveAll : shared [ApproveRequest] -> async [TokenIndex];
+    availableCycles : shared query () -> async Nat;
+    balance : shared query BalanceRequest -> async BalanceResponse;
+    batchMintNFT : shared [MintRequest] -> async [TokenIndex];
+    batchTransfer : shared [TransferRequest] -> async [TransferResponse];
+    bearer : shared query TokenIdentifier__6 -> async Result__1_1;
+    deleteMetadataStorageType : shared Text -> ();
+    extensions : shared query () -> async [Extension];
+    getAllowances : shared query () -> async [(TokenIndex, Principal)];
+    getIsOpen : shared TokenIdentifier__6 -> async Result_12;
+    getMedataStorageType : shared () -> async [Text];
+    getMinter : shared query () -> async Principal;
+    getNFTMetadata : shared () -> async [Metadata];
+    getOpenTime : shared () -> async Time;
+    getProperties : shared query () -> async [(Text, [(Text, Nat)])];
+    getRegistry : shared query () -> async [(TokenIndex, AccountIdentifier__3)];
+    getRootBucketId : shared () -> async ?Text;
+    getScore : shared query () -> async [(TokenIndex, Float)];
+    getStorageMetadataUrl : shared (MetadataStorageType, TokenIndex) -> async (
+        (Text, Text)
+      );
+    getTokens : shared query () -> async [(TokenIndex, Metadata)];
+    getTokensByIds : shared query [TokenIndex] -> async [
+        (TokenIndex, Metadata)
+      ];
+    getTokensByProperties : shared query [(Text, [Text])] -> async [
+        (TokenIndex, Metadata)
+      ];
+    getTokenspageable : shared query (TokenIndex, TokenIndex) -> async [
+        (TokenIndex, Metadata)
+      ];
+    http_request : shared query HttpRequest -> async HttpResponse;
+    initCap : shared () -> async ?Text;
+    initLastMetadata : shared (TokenIndex, TokenIndex) -> async ();
+    initproperties : shared [TokenIndex] -> async ();
+    lookProperties : shared query () -> async [(Property, [TokenIndex])];
+    lookPropertyScoreByTokenId : shared query () -> async [
+        (TokenIndex, [(Property, Int64)])
+      ];
+    metadata : shared query TokenIdentifier__6 -> async Result__1;
+    mintNFT : shared MintRequest -> async TokenIndex;
+    open : shared TokenIdentifier__6 -> async Result_11;
+    putNFTMetadata : shared [Metadata] -> async ();
+    replaceMetadata : shared (
+        MetadataStorageType,
+        TokenIndex,
+        TokenIndex,
+      ) -> async ();
+    setMinter : shared Principal -> async ();
+    setOpenTime : shared Time -> async ();
+    setScoreOfTokenId : shared Int64 -> async ();
+    supply : shared query TokenIdentifier__6 -> async Result_10;
+    tokens : shared query AccountIdentifier__3 -> async Result_9;
+    tokens_ext : shared query AccountIdentifier__3 -> async Result_8;
+    transfer : shared TransferRequest -> async TransferResponse;
+    updateNFTMetadata : shared [Metadata] -> async ();
+  }
+}
